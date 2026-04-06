@@ -1,37 +1,37 @@
-import { useParams } from "react-router-dom";
-import {useState, useEffect} from 'react'
-// ==============================
-import {ArrowUp} from 'lucide-react'
-// ============================== 
-import ProductCard from "../components/ProductCard";
+import { useParams, useSearchParams } from 'react-router-dom';
+import ProductCard from '../components/ProductCard.jsx';
+import { ArrowUp } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 const CatalogPage = () => {
-	const {category} = useParams()
-	const [showScrollTop, setShowScrollTop] = useState(false)
+  const { category } = useParams();
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get('search') || '';
 
-	const [priceRange, setPriceRange] = useState(50)
+	const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(30);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
-	const getTitle = () => {
-		switch(category?.toLowerCase()) {
-			case 'men': return "Man's socks"
-			case 'women': return "Woman's socks"
-			case 'kids': return "Kid's socks"
-			case 'new': return "New!"
-			default: return 'All socks'
-		}
-	}
+  const getTitle = () => {
+    if (searchQuery) return `Search: "${searchQuery}"`
+    switch(category?.toLowerCase()) {
+      case 'men': return "Man's socks";
+      case 'women': return "Woman's socks";
+      case 'kids': return "Kid's socks";
+      case 'new': return "New!";
+      default: return "All socks";
+    }
+  };
 
-	const scrollToTop = () => {
-		window.scrollTo({top: 0, behavior: 'smooth'})
-	}
-	
-	useEffect(() => {
-		const handleScroll = () => setShowScrollTop(window.scrollY > 400)
-		window.addEventListener('scroll', handleScroll)
-		return () => window.removeEventListener('scroll', handleScroll)
-	}, [])
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' })
 
-	const products = [
+  useEffect(() => {
+    const handleScroll = () => setShowScrollTop(window.scrollY > 400);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const allProducts = [
     { id: 1, name: "Classic Black Socks", price: 4.99 },
     { id: 2, name: "Striped Summer Socks", price: 6.50 },
     { id: 3, name: "Wool Warm Socks", price: 12.99 },
@@ -40,34 +40,41 @@ const CatalogPage = () => {
     { id: 6, name: "Luxury Silk Socks", price: 18.99 },
     { id: 7, name: "Kids Dinosaur Socks", price: 3.99 },
     { id: 8, name: "Cartoon Socks Pack", price: 9.99 },
-  ]
+    { id: 9, name: "Classic White Socks", price: 4.50 },
+  ];
 
-	const filteredProducts = products.filter(p => p.price <= priceRange)
+  const filteredProducts = allProducts.filter(product => {
+    const matchesSearch = !searchQuery || 
+      product.name.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    const matchesPrice = product.price >= minPrice && product.price <= maxPrice;
+    
+    return matchesSearch && matchesPrice;
+  })
 
-	return (
-		<div className="bg-gray-50 min-h-screen pb-20">
-      <div className="bg-gray-200 py-5">
+  return (
+    <div className="bg-gray-50 min-h-screen pb-20">
+      <div className="bg-gray-200 py-8">
         <div className="max-w-7xl mx-auto px-6 text-center">
-          <h1 className="text-3xl font-bold tracking-tight">{getTitle()}</h1>
+          <h1 className="text-4xl font-bold tracking-tight">{getTitle()}</h1>
         </div>
       </div>
 
       <div className="sticky top-[118px] z-40 bg-white border-b py-6">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col items-center">
-            <div className="flex items-center gap-8 mb-3">
-              <span className="text-sm font-medium text-gray-600">Price up to:</span>
-              <span className="text-xl font-semibold text-black">€{priceRange}</span>
-            </div>
-
+        <div className="max-w-7xl mx-auto px-6 flex justify-center">
+          <div className="flex items-center gap-4 bg-white px-6 py-3 rounded shadow-sm border">
             <input
-              type="range"
-              min="1"
-              max="30"
-              step="1"
-              value={priceRange}
-              onChange={(e) => setPriceRange(Number(e.target.value))}
-              className="w-full max-w-md accent-black cursor-pointer"
+              type="number"
+              value={minPrice}
+              onChange={(e) => setMinPrice(Number(e.target.value) || 0)}
+              className="w-20 bg-gray-100 border border-gray-300 rounded text-center py-2 text-sm font-medium focus:outline-none"
+            />
+            <span className="text-gray-500 font-medium">to</span>
+            <input
+              type="number"
+              value={maxPrice}
+              onChange={(e) => setMaxPrice(Number(e.target.value) || 30)}
+              className="w-20 bg-gray-100 border border-gray-300 rounded text-center py-2 text-sm font-medium focus:outline-none"
             />
           </div>
         </div>
@@ -82,7 +89,7 @@ const CatalogPage = () => {
           </div>
         ) : (
           <div className="text-center py-28">
-            <p className="text-3xl text-gray-400">No products found</p>
+            <p className="text-3xl text-gray-400">Nothing is found by search</p>
           </div>
         )}
       </div>
@@ -96,7 +103,7 @@ const CatalogPage = () => {
         </button>
       )}
     </div>
-	)
-}
+  );
+};
 
-export default CatalogPage
+export default CatalogPage;

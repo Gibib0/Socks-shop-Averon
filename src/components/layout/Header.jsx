@@ -49,7 +49,7 @@ const Header = () => {
               className="font-bold text-3xl tracking-tighter"
               style={{ fontFamily: "'Montserrat Subrayada', sans-serif" }}
             >
-              AVERON
+              SOKKEN LOKKEN
             </Link>
 
             <form onSubmit={handleSearch} className="w-80">
@@ -59,7 +59,7 @@ const Header = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search..."
-                  className="w-full bg-gray-100 border border-gray-200 rounded-2xl py-2 pl-12 pr-5 text-base focus:outline-none focus:border-gray-400 transition-colors"
+                  className="w-full bg-gray-100 border border-gray-200 rounded-xl py-2 pl-12 pr-5 text-base focus:outline-none focus:border-gray-400 transition-colors"
                 />
                 <Search className="absolute left-5 top-2.5 text-gray-400" size={20} />
               </div>

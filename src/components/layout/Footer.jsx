@@ -1,6 +1,9 @@
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const Footer = () => {
+  const { t } = useTranslation()
+
   return (
     <footer className="bg-[#1f1f1f] text-white pt-12 pb-10 border-t border-gray-800">
       <div className="max-w-7xl mx-auto px-6">
@@ -30,32 +33,32 @@ const Footer = () => {
             </div>
 
             <p className="text-gray-400 text-sm mt-6">
-              Какая-то фраза.
+              {t('footerPhrase')}
             </p>
           </div>
 
           <div className="col-span-6 md:col-span-2">
-            <h3 className="text-white font-semibold mb-5 text-base">Categories</h3>
+            <h3 className="text-white font-semibold mb-5 text-base">{t('Categories')}</h3>
             <ul className="space-y-3 text-sm text-gray-400">
-              <li><Link to="/catalog/men" className="hover:text-white transition-colors">Man's</Link></li>
-              <li><Link to="/catalog/women" className="hover:text-white transition-colors">Woman's</Link></li>
-              <li><Link to="/catalog/kids" className="hover:text-white transition-colors">Kid's</Link></li>
-              <li><Link to="/catalog/new" className="hover:text-white transition-colors">Our new socks</Link></li>
+              <li><Link to="/catalog/men" className="hover:text-white transition-colors">{t("Man's")}</Link></li>
+              <li><Link to="/catalog/women" className="hover:text-white transition-colors">{t("Woman's")}</Link></li>
+              <li><Link to="/catalog/kids" className="hover:text-white transition-colors">{t("Kid's")}</Link></li>
+              <li><Link to="/catalog/new" className="hover:text-white transition-colors">{t("Our new socks")}</Link></li>
             </ul>
           </div>
 
           <div className="col-span-6 md:col-span-2">
-            <h3 className="text-white font-semibold mb-5 text-base">Service</h3>
+            <h3 className="text-white font-semibold mb-5 text-base">{t('Service')}</h3>
             <ul className="space-y-3 text-sm text-gray-400">
-              <li><Link to="/about" className="hover:text-white transition-colors">Our shop</Link></li>
-              <li><Link to="/about" className="hover:text-white transition-colors">Payment methods</Link></li>
-              <li><Link to="/about" className="hover:text-white transition-colors">Shipping & return</Link></li>
-              <li><Link to="/about" className="hover:text-white transition-colors">General terms & conditions</Link></li>
+              <li><Link to="/about" className="hover:text-white transition-colors">{t("Our shop")}</Link></li>
+              <li><Link to="/about" className="hover:text-white transition-colors">{t("Payment methods")}</Link></li>
+              <li><Link to="/about" className="hover:text-white transition-colors">{t("Shipping & return")}</Link></li>
+              <li><Link to="/about" className="hover:text-white transition-colors">{t("General terms & conditions")}</Link></li>
             </ul>
           </div>
 
           <div className="col-span-12 md:col-span-3">
-            <h3 className="text-white font-semibold mb-5 text-base">Contact</h3>
+            <h3 className="text-white font-semibold mb-5 text-base">{t('Contact')}</h3>
             <div className="space-y-4 text-sm">
               <div>
                 <p className="text-gray-400">Phone:</p>
@@ -73,7 +76,7 @@ const Footer = () => {
 
       <div className="border-t border-gray-800 mt-14 pt-6">
         <div className="max-w-7xl mx-auto px-6 text-center text-xs text-gray-500">
-          © 2026 SOKKEN LOKKEN, rights reserved.
+          {t('rights')}
         </div>
       </div>
     </footer>

@@ -1,0 +1,65 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "name": "Classic Black Socks",
+      "price": 4.99,
+      "category": "men",
+      "material": "cotton",
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRq2TPXIFrU1p0S2CT7cATBthiKPWfjM_WvAg&s"
+    },
+    {
+      "id": "2",
+      "name": "Striped Summer Socks",
+      "price": 6.5,
+      "category": "men",
+      "material": "cotton",
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdy-t_qrELPxh_ooUB_TvXXYdcij9c9sLY_g&s"
+    },
+    {
+      "id": "3",
+      "name": "Wool Warm Socks",
+      "price": 12.99,
+      "category": "men",
+      "material": "wool",
+      "image": "https://www.nordicsocks.com/cdn/shop/files/IDA-3872-AUTUMN_64061e85-3cd8-44ff-9ba0-46618f6af7f5_1200x.jpg?v=1704466821"
+    },
+    {
+      "id": "4",
+      "name": "Pink Cute Socks",
+      "price": 7.5,
+      "category": "women",
+      "material": "cotton",
+      "image": "https://boogzelclothing.com/cdn/shop/files/pink-cute-socks-aesthetic-socks_1_800x.jpg?v=1692001053"
+    },
+    {
+      "id": "5",
+      "name": "Kids Dinosaur Socks",
+      "price": 3.99,
+      "category": "kids",
+      "material": "cotton",
+      "image": "https://altersocks.com/wp-content/uploads/2021/04/dinosaur-socks-for-kids.jpg"
+    }
+  ],
+  "favorites": [],
+  "cart": [
+    {
+      "id": "eE28mi6EKno",
+      "name": "Striped Summer Socks",
+      "price": 6.5,
+      "category": "men",
+      "material": "cotton",
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdy-t_qrELPxh_ooUB_TvXXYdcij9c9sLY_g&s",
+      "quantity": 1
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "name": "User",
+      "email": "user@example.com",
+      "avatar": "https://via.placeholder.com/128"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

@@ -2,55 +2,74 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import ProductCard from '../components/ProductCard.jsx';
 import { ArrowUp } from 'lucide-react';
 import { useState, useEffect } from 'react';
+// ================================
+import api from '../api/api.js'
+import useFavoritesStore from '../features/store/favoritesStore.js';
+import useCartStore from '../features/store/cartStore.js';
+import { useTranslation } from 'react-i18next'
 
 const CatalogPage = () => {
   const { category } = useParams();
   const [searchParams] = useSearchParams();
-  const searchQuery = searchParams.get('search') || '';
+  const searchQuery = searchParams.get('search')?.trim() || ''
 
-	const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(30);
-  const [showScrollTop, setShowScrollTop] = useState(false);
+	const [products, setProducts] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [minPrice, setMinPrice] = useState(0)
+  const [maxPrice, setMaxPrice] = useState(30)
+  const [showScrollTop, setShowScrollTop] = useState(false)
+
+  const { t } = useTranslation()
 
   const getTitle = () => {
     if (searchQuery) return `Search: "${searchQuery}"`
     switch(category?.toLowerCase()) {
-      case 'men': return "Man's socks";
-      case 'women': return "Woman's socks";
-      case 'kids': return "Kid's socks";
-      case 'new': return "New!";
-      default: return "All socks";
+      case 'men': return t("Man's")
+      case 'women': return t("Woman's")
+      case 'kids': return t("Kid's")
+      case 'new': return t("New!")
+      default: return t("All socks")
     }
-  };
+  }
+
+  useEffect(() => {
+    useFavoritesStore.getState().fetchFavorites()
+    useCartStore.getState().fetchCart()
+    const fetchProducts = async () => {
+      try {
+        setLoading(true)
+        const response = await api.get('/products')
+        setProducts(response.data)
+      } catch (error) {
+        console.error('Loading error:', error)
+        setProducts([])
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchProducts()
+  }, [])
+
+  const filteredProducts = products.filter(product => {
+    const matchesSearch = !searchQuery || 
+      product.name.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const matchesPrice = product.price >= minPrice && product.price <= maxPrice;
+
+    const matchesCategory = !category ||
+    product.category?.toLowerCase() === category.toLowerCase()
+
+    return matchesSearch && matchesPrice && matchesCategory;
+  })
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' })
 
   useEffect(() => {
-    const handleScroll = () => setShowScrollTop(window.scrollY > 400);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const allProducts = [
-    { id: 1, name: "Classic Black Socks", price: 4.99 },
-    { id: 2, name: "Striped Summer Socks", price: 6.50 },
-    { id: 3, name: "Wool Warm Socks", price: 12.99 },
-    { id: 4, name: "Funny Pattern Socks", price: 5.99 },
-    { id: 5, name: "Pink Cute Socks", price: 7.50 },
-    { id: 6, name: "Luxury Silk Socks", price: 18.99 },
-    { id: 7, name: "Kids Dinosaur Socks", price: 3.99 },
-    { id: 8, name: "Cartoon Socks Pack", price: 9.99 },
-    { id: 9, name: "Classic White Socks", price: 4.50 },
-  ];
-
-  const filteredProducts = allProducts.filter(product => {
-    const matchesSearch = !searchQuery || 
-      product.name.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    const matchesPrice = product.price >= minPrice && product.price <= maxPrice;
-    
-    return matchesSearch && matchesPrice;
-  })
+    const handleScroll = () => setShowScrollTop(window.scrollY > 400)
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   return (
     <div className="bg-gray-50 min-h-screen pb-20">
@@ -89,7 +108,7 @@ const CatalogPage = () => {
           </div>
         ) : (
           <div className="text-center py-28">
-            <p className="text-3xl text-gray-400">Nothing is found by search</p>
+            <p className="text-3xl text-gray-400">{t("Nothing is found by search")}</p>
           </div>
         )}
       </div>

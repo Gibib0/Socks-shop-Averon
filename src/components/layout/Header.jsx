@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { Heart, ShoppingCart, Search } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState('')
-  const [currentLang, setCurrentLang] = useState('en')
   const location = useLocation()
   const navigate = useNavigate()
+  const {i18n} = useTranslation()
 
   const handleSearch = (e) => {
     e.preventDefault()
@@ -16,9 +17,11 @@ const Header = () => {
   }
 
   const changeLanguage = (lang) => {
-    setCurrentLang(lang)
+    i18n.changeLanguage(lang)
     console.log(`Language has been changed to: ${lang}`)
   }
+
+  const currentLang = i18n.language
 
 	const getActiveCategory = () => {
     const path = location.pathname;
@@ -58,7 +61,7 @@ const Header = () => {
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search..."
+                  placeholder={i18n.t("Search...")}
                   className="w-full bg-gray-100 border border-gray-200 rounded-xl py-2 pl-12 pr-5 text-base focus:outline-none focus:border-gray-400 transition-colors"
                 />
                 <Search className="absolute left-5 top-2.5 text-gray-400" size={20} />
@@ -115,7 +118,7 @@ const Header = () => {
                   : 'hover:bg-gray-100'
               }`}
             >
-              Man's
+              {i18n.t("Man's")}
             </Link>
             <Link 
               to="/catalog/women"
@@ -125,7 +128,7 @@ const Header = () => {
                   : 'hover:bg-gray-100'
               }`}
             >
-              Woman's
+              {i18n.t("Woman's")}
             </Link>
             <Link 
               to="/catalog/kids"
@@ -135,7 +138,7 @@ const Header = () => {
                   : 'hover:bg-gray-100'
               }`}
             >
-              Kid's
+              {i18n.t("Kid's")}
             </Link>
             <Link 
               to="/catalog/new"
@@ -145,7 +148,7 @@ const Header = () => {
                   : 'hover:bg-gray-100'
               }`}
             >
-              New!
+              {i18n.t("New!")}
             </Link>
           </nav>
         </div>
